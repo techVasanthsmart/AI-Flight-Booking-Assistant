@@ -1,0 +1,16 @@
+# Streamlit config for AI Flight Booking Assistant
+# https://docs.streamlit.io/library/advanced-features/configuration
+
+[theme]
+primaryColor = "#0ea5e9"
+backgroundColor = "#ffffff"
+secondaryBackgroundColor = "#f1f5f9"
+textColor = "#1e293b"
+font = "sans serif"
+
+[server]
+headless = true
+enableXsrfProtection = true
+
+[browser]
+gatherUsageStats = false
