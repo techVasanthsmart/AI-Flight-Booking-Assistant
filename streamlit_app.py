@@ -32,40 +32,125 @@ st.set_page_config(
     page_title="AI Flight Booking Assistant",
     page_icon="✈️",
     layout="wide",
-    initial_sidebar_state="collapsed",
+    initial_sidebar_state="expanded",
 )
 
 # Custom CSS for polished UI
 st.markdown("""
 <style>
-    /* Header styling */
+    /* Root: subtle background and spacing */
+    .stApp {
+        background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 50%, #e2e8f0 100%);
+    }
+    /* Main block container - readable width on wide layout */
+    .block-container {
+        padding-top: 2rem;
+        padding-bottom: 3rem;
+        max-width: 900px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    /* Header card */
+    .hero-card {
+        background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #0c4a6e 100%);
+        border-radius: 16px;
+        padding: 1.75rem 2rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 20px rgba(15, 23, 42, 0.15);
+    }
     .main-header {
-        font-size: 2rem;
+        font-size: 1.85rem;
         font-weight: 700;
-        color: #1e3a5f;
-        margin-bottom: 0.25rem;
+        color: #f8fafc;
+        margin: 0 0 0.35rem 0;
         letter-spacing: -0.02em;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
     }
     .sub-header {
-        color: #64748b;
-        font-size: 1rem;
-        margin-bottom: 1.5rem;
+        color: #94a3b8;
+        font-size: 0.95rem;
+        margin: 0;
+        line-height: 1.5;
     }
     /* Chat message containers */
     [data-testid="stChatMessage"] {
         padding: 1rem 1.25rem;
-        border-radius: 12px;
-        margin-bottom: 0.5rem;
+        border-radius: 14px;
+        margin-bottom: 0.75rem;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.06);
     }
-    /* User messages - subtle background */
+    /* User messages */
     [data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-user"]) {
-        background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
-        border: 1px solid #bae6fd;
+        background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+        border: 1px solid #7dd3fc;
     }
     /* Assistant messages */
     [data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-assistant"]) {
-        background: #f8fafc;
+        background: #ffffff;
         border: 1px solid #e2e8f0;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    }
+    /* Chat input area - improved typing experience */
+    [data-testid="stChatInput"] {
+        padding: 1rem 0 1.5rem 0;
+        background: linear-gradient(180deg, transparent 0%, rgba(248, 250, 252, 0.8) 100%);
+    }
+    [data-testid="stChatInput"] > div {
+        background: #ffffff;
+        border-radius: 16px;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+        padding: 0.5rem;
+        transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    [data-testid="stChatInput"] > div:focus-within {
+        border-color: #0ea5e9;
+        box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15), 0 2px 8px rgba(0, 0, 0, 0.06);
+    }
+    [data-testid="stChatInput"] textarea {
+        border: none !important;
+        border-radius: 12px;
+        padding: 0.875rem 1rem !important;
+        min-height: 52px !important;
+        font-size: 1rem !important;
+        line-height: 1.5 !important;
+        background: #f8fafc !important;
+        box-shadow: none !important;
+    }
+    [data-testid="stChatInput"] textarea::placeholder {
+        color: #64748b;
+    }
+    [data-testid="stChatInput"] textarea:focus {
+        background: #ffffff !important;
+        outline: none !important;
+    }
+    /* Send button inside chat input */
+    [data-testid="stChatInput"] button {
+        border-radius: 10px !important;
+        font-weight: 500 !important;
+    }
+    /* Sidebar styling */
+    [data-testid="stSidebar"] {
+        background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+    }
+    [data-testid="stSidebar"] .stMarkdown h3 {
+        color: #1e293b;
+        font-weight: 600;
+    }
+    .tip-item {
+        background: #fff;
+        border-radius: 10px;
+        padding: 0.65rem 1rem;
+        margin-bottom: 0.5rem;
+        border: 1px solid #e2e8f0;
+        font-size: 0.9rem;
+        color: #475569;
+    }
+    .tip-item:hover {
+        border-color: #bae6fd;
+        background: #f0f9ff;
     }
     /* Hide Streamlit branding for cleaner deploy */
     #MainMenu {visibility: hidden;}
@@ -279,10 +364,12 @@ def get_openai_response(messages: list) -> str:
 def main():
     _inject_secrets()
 
-    # Header
-    st.markdown('<p class="main-header">✈️ AI Flight Booking Assistant</p>', unsafe_allow_html=True)
+    # Hero header
     st.markdown(
-        '<p class="sub-header">Search flights, check status, and get schedules. Ask in natural language.</p>',
+        '<div class="hero-card">'
+        '<p class="main-header">✈️ AI Flight Booking Assistant</p>'
+        '<p class="sub-header">Search flights, check status, and get schedules. Ask in natural language.</p>'
+        '</div>',
         unsafe_allow_html=True,
     )
 
@@ -296,7 +383,7 @@ def main():
             st.markdown(msg["content"])
 
     # Chat input
-    if prompt := st.chat_input("Ask about flights, e.g. 'Flights from JFK to LAX' or 'Status of flight AA100'"):
+    if prompt := st.chat_input("Ask about flights… e.g. JFK to LAX or status of AA100"):
         # Append user message and display
         st.session_state.messages.append({"role": "user", "content": prompt})
 
@@ -319,14 +406,17 @@ def main():
 
         st.session_state.messages.append({"role": "assistant", "content": response_text})
 
-    # Sidebar with tips (optional, shown as expander if we add sidebar later)
+    # Sidebar with tips
     with st.sidebar:
         st.markdown("### 💡 Try asking")
-        st.markdown("- *Flights from JFK to LAX today*")
-        st.markdown("- *Status of flight AA100*")
-        st.markdown("- *Delta flights from Atlanta to Chicago*")
+        st.markdown(
+            '<div class="tip-item">Flights from JFK to LAX today</div>'
+            '<div class="tip-item">Status of flight AA100</div>'
+            '<div class="tip-item">Delta flights from Atlanta to Chicago</div>',
+            unsafe_allow_html=True,
+        )
         st.markdown("---")
-        st.caption("Uses OpenRouter and Aviationstack. Set OPENROUTER_API_KEY and CLIENTSECRET in secrets.")
+        st.caption("Powered by OpenRouter + Aviationstack. Set OPENROUTER_API_KEY and CLIENTSECRET in secrets.")
 
 
 if __name__ == "__main__":

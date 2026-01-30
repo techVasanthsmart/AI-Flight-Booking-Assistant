@@ -2,6 +2,10 @@
 
 A conversational AI assistant that helps users search for flights, check flight status, and find schedules using real-time data from the Aviationstack API. Built with **OpenRouter** (GPT-4o-mini), **Streamlit**, and a **Jupyter/Gradio** notebook.
 
+[![GitHub](https://img.shields.io/badge/GitHub-repo-24292e?logo=github)](https://github.com/techVasanthsmart/AI-Flight-Booking-Assistant)
+[![Live Demo](https://img.shields.io/badge/Live_Demo-Streamlit-ff4b4b?logo=streamlit)](https://ai-flight-booking-assistant-qwyknk3lgu6qgjgaab7qvb.streamlit.app/)
+[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/techVasanthsmart/AI-Flight-Booking-Assistant/blob/master/ai-flight-booking-assistant.ipynb)
+
 ![Python](https://img.shields.io/badge/python-3.9+-blue.svg)
 ![Streamlit](https://img.shields.io/badge/Streamlit-1.28+-red.svg)
 ![OpenRouter](https://img.shields.io/badge/OpenRouter-API-green.svg)
@@ -11,7 +15,7 @@ A conversational AI assistant that helps users search for flights, check flight 
 - **Natural language chat** – Ask about flights in plain English (e.g. “Flights from JFK to LAX today”, “Status of flight AA100”).
 - **Real-time flight data** – Powered by the [Aviationstack](https://aviationstack.com/) API.
 - **Tool calling** – The assistant uses a flight search tool to fetch live data instead of guessing.
-- **Streamlit UI** – Clean chat interface deployable on [Streamlit Cloud](https://share.streamlit.io).
+- **Streamlit UI** – Clean chat interface; [**try the live app**](https://ai-flight-booking-assistant-qwyknk3lgu6qgjgaab7qvb.streamlit.app/) or deploy on [Streamlit Cloud](https://share.streamlit.io).
 - **Jupyter + Gradio** – Alternative notebook UI in `ai-flight-booking-assistant.ipynb`.
 
 ## Project structure
@@ -24,8 +28,6 @@ AI-Assistant/
 ├── .env.example                   # Sample env vars (copy to .env)
 ├── .streamlit/
 │   └── config.toml               # Streamlit theme & config
-├── DEPLOY_STREAMLIT.md            # Streamlit Cloud deployment guide
-├── LINKEDIN_POST.md               # LinkedIn post templates
 └── README.md                      # This file
 ```
 
@@ -35,7 +37,7 @@ AI-Assistant/
 
 ```bash
 git clone https://github.com/techVasanthsmart/AI-Flight-Booking-Assistant.git
-cd AI-Assistant
+cd AI-Flight-Booking-Assistant
 ```
 
 ### 2. Create and activate virtual environment
@@ -110,7 +112,9 @@ Open [http://localhost:8501](http://localhost:8501) in your browser.
    CLIENTSECRET = "your-aviationstack-api-key"
    ```
 
-5. Deploy. See [DEPLOY_STREAMLIT.md](DEPLOY_STREAMLIT.md) for full steps.
+5. Deploy. Your app will get a URL like `https://your-app-name.streamlit.app/`.  
+   **Live demo:** [ai-flight-booking-assistant.streamlit.app](https://ai-flight-booking-assistant-qwyknk3lgu6qgjgaab7qvb.streamlit.app/)  
+   See [DEPLOY_STREAMLIT.md](DEPLOY_STREAMLIT.md) for full steps.
 
 ## Tech stack
 
